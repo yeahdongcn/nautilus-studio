@@ -1,0 +1,44 @@
+name: Feature request
+description: Propose a creator workflow or provider integration
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: creator_problem
+    attributes:
+      label: Creator problem
+      description: What should a non-technical creator be able to accomplish?
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Desired workflow
+      description: Describe the visible experience; implementation nodes should stay behind the UI.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Story and storyboard agent
+        - Material library and image editing
+        - Video provider
+        - Continuity and final assembly
+        - Creator UI
+        - Deployment and operations
+    validations:
+      required: true
+  - type: textarea
+    id: provider
+    attributes:
+      label: Provider or model contract
+      description: If applicable, link public API/model documentation and state whether you can test it.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: This request is framed as a creator outcome, not only a backend node.
+          required: true

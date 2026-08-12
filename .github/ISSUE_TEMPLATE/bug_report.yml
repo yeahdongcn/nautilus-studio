@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a reproducible Nautilus Studio defect
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Remove API keys, private media, internal hostnames, and model paths before submitting.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the expected and actual creator workflow.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Create a project with ...
+        2. Select ...
+        3. Start rendering ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Nautilus version, Python/Node version, browser, provider type, model name/revision, and operating system. Do not include credentials.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs or screenshots
+      description: Paste only the smallest relevant excerpt and confirm that it contains no private prompts, media, URLs, or keys.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: I removed credentials and private creator content.
+          required: true

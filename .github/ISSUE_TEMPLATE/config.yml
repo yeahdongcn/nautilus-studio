@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/yeahdongcn/nautilus-studio/security/advisories/new
+    about: Report vulnerabilities privately; never include credentials or private media in a public issue.

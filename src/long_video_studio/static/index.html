@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nautilus Studio — AI Film Workshop</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">N</div>
+        <div>
+          <strong>Nautilus Studio</strong>
+          <span>海螺引擎 · 从灵感到成片</span>
+        </div>
+      </div>
+      <nav class="studio-nav" aria-label="工作区">
+        <span class="nav-item active">导演台</span>
+        <span class="nav-item">素材</span>
+        <span class="nav-item">分镜</span>
+        <span class="nav-item">渲染</span>
+      </nav>
+      <div class="top-actions">
+        <label class="project-picker" aria-label="选择项目">
+          <span>当前项目</span>
+          <select id="project-selector"></select>
+        </label>
+        <span id="engine-status" class="status-pill neutral">正在检查制作环境</span>
+        <button id="new-project" class="ghost-button">＋ 新项目</button>
+      </div>
+    </header>
+
+    <main class="studio-layout">
+      <aside class="left-rail">
+        <section class="panel brief-panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">DIRECTOR'S BRIEF / 创作简报</span>
+              <h1>把一个念头，拍成一部片</h1>
+            </div>
+          </div>
+          <form id="brief-form">
+            <label>
+              项目名称
+              <input id="brief-title" value="我的第一支长视频" maxlength="80" />
+            </label>
+            <label>
+              故事灵感
+              <textarea
+                id="brief-prompt"
+                rows="6"
+                required
+                placeholder="例如：一位年轻女孩在雨夜收养了一只流浪猫，第二天她们一起迎来阳光。"
+              ></textarea>
+            </label>
+            <div class="field-grid">
+              <label>
+                成片时长
+                <select id="brief-duration">
+                  <option value="30">30 秒</option>
+                  <option value="60" selected>1 分钟</option>
+                  <option value="90">1 分 30 秒</option>
+                  <option value="180">3 分钟</option>
+                  <option value="300">5 分钟</option>
+                </select>
+              </label>
+              <label>
+                画面比例
+                <select id="brief-aspect">
+                  <option value="16:9" selected>横屏 16:9</option>
+                  <option value="9:16">竖屏 9:16</option>
+                  <option value="1:1">方形 1:1</option>
+                </select>
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>
+                导演风格
+                <select id="brief-style-preset">
+                  <option value="cinematic" selected>电影叙事</option>
+                  <option value="documentary">真实生活</option>
+                  <option value="music_video">情绪 MV</option>
+                  <option value="energetic">高能短片</option>
+                  <option value="commercial">品牌广告</option>
+                  <option value="custom">纯自定义</option>
+                </select>
+              </label>
+              <label>
+                补充导演要求（可选）
+                <input id="brief-style-instructions" placeholder="例如：一镜到底，不要跳切，保持人物身份一致" />
+              </label>
+              <label>
+                字幕
+                <select id="brief-subtitle-mode">
+                  <option value="none" selected>关闭画内字幕</option>
+                  <option value="sidecar">生成外挂 SRT（不烧录）</option>
+                </select>
+              </label>
+            </div>
+            <div class="quality-switch" role="group" aria-label="质量档位">
+              <button type="button" data-quality="draft" class="active">
+                <strong>故事草稿</strong>
+                <span>快速确认节奏</span>
+              </button>
+              <button type="button" data-quality="final">
+                <strong>最终质量</strong>
+                <span>50-step 成片</span>
+              </button>
+            </div>
+            <div class="selected-summary">
+              <span>已编入片单的素材</span>
+              <strong id="selected-count">0</strong>
+            </div>
+            <button class="primary-button full" type="submit">
+              <span>开始构思故事板</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </form>
+        </section>
+
+        <section class="panel asset-panel">
+          <div class="section-heading compact">
+            <div>
+              <span class="eyebrow">THE LIBRARY / 素材库</span>
+              <h2>把你的世界带进来</h2>
+            </div>
+            <span id="asset-count" class="count-badge">0</span>
+          </div>
+
+          <div id="drop-zone" class="drop-zone" tabindex="0">
+            <input id="asset-files" type="file" multiple hidden />
+            <div class="upload-icon">＋</div>
+            <strong>拖入人物、场景或声音</strong>
+            <span>一次导入多份素材，Nautilus 会帮你编排</span>
+          </div>
+
+          <div class="import-meta">
+            <select id="asset-role" aria-label="素材类型">
+              <option value="reference">普通参考</option>
+              <option value="character">角色</option>
+              <option value="location">场景</option>
+              <option value="prop">道具</option>
+              <option value="style">画风</option>
+              <option value="start_frame">首帧</option>
+              <option value="audio">声音</option>
+            </select>
+            <input id="asset-tags" placeholder="标签，用逗号分隔" />
+          </div>
+
+          <details class="path-import">
+            <summary>从服务器素材目录导入</summary>
+            <div class="path-import-row">
+              <input id="import-path" placeholder="/media/my-assets" />
+              <button id="import-path-button" class="small-button" type="button">扫描</button>
+            </div>
+            <small>目录必须位于服务端允许的导入根目录内。</small>
+          </details>
+
+          <div class="asset-toolbar">
+            <input id="asset-search" type="search" placeholder="搜索素材、标签或角色" />
+            <select id="asset-kind-filter" aria-label="媒体类型">
+              <option value="">全部</option>
+              <option value="image">图片</option>
+              <option value="video">视频</option>
+              <option value="audio">音频</option>
+            </select>
+          </div>
+          <div id="asset-grid" class="asset-grid"></div>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <div id="empty-state" class="empty-state">
+          <div class="empty-illustration">
+            <div class="frame frame-one"></div>
+            <div class="frame frame-two"></div>
+            <div class="frame frame-three"></div>
+          </div>
+          <span class="eyebrow">NAUTILUS WORKSPACE / 导演工作台</span>
+          <h2>你的下一部片，从这里开始</h2>
+          <p>写下一句话，选几张参考素材。故事、分镜、连续镜头和渲染会在幕后自动完成。</p>
+        </div>
+
+        <div id="project-view" class="project-view hidden">
+          <section class="project-hero">
+            <div>
+              <span class="eyebrow">CURRENT CUT / 当前影片</span>
+              <h2 id="project-title"></h2>
+              <p id="project-logline"></p>
+            </div>
+            <div class="project-actions">
+              <button id="compile-project" class="secondary-button">预览制作计划</button>
+              <button id="render-project" class="primary-button">渲染成片&nbsp;↗</button>
+            </div>
+          </section>
+
+          <section class="bible-strip">
+            <article>
+              <span>视觉风格</span>
+              <p id="bible-style"></p>
+            </article>
+            <article>
+              <span>角色</span>
+              <p id="bible-characters"></p>
+            </article>
+            <article>
+              <span>场景</span>
+              <p id="bible-locations"></p>
+            </article>
+            <article>
+              <span>连续性原则</span>
+              <p id="bible-continuity"></p>
+            </article>
+          </section>
+
+          <section class="storyboard-section">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">STORYBOARD / 分镜故事板</span>
+                <h2>每一镜，都有它的理由</h2>
+              </div>
+              <span id="storyboard-summary" class="muted"></span>
+            </div>
+            <div id="storyboard" class="storyboard"></div>
+          </section>
+
+          <section class="timeline-section">
+            <div class="section-heading compact">
+              <div>
+                <span class="eyebrow">FINAL CUT / 成片时间线</span>
+                <h2>从第一帧到最后一帧</h2>
+              </div>
+            </div>
+            <div id="timeline" class="timeline"></div>
+          </section>
+
+          <section id="production-panel" class="production-panel hidden">
+            <div>
+              <span class="eyebrow">RENDER CONTROL / 渲染中心</span>
+              <h3 id="production-estimate"></h3>
+              <ul id="production-warnings"></ul>
+            </div>
+            <div id="job-progress" class="job-progress hidden">
+              <div class="progress-heading">
+                <strong id="progress-title">制作进度</strong>
+                <strong id="progress-percent">0%</strong>
+              </div>
+              <div class="progress-track"><div id="progress-fill"></div></div>
+              <div class="progress-meta">
+                <span id="progress-message"></span>
+                <span id="progress-timing"></span>
+              </div>
+              <video id="output-video" class="output-video hidden" controls playsinline preload="metadata"></video>
+              <a id="output-link" class="output-link hidden" href="#">查看并下载成片</a>
+              <a id="subtitle-link" class="output-link hidden" href="#">外挂字幕（SRT）</a>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="asset-dialog" class="asset-dialog">
+      <form method="dialog">
+        <div class="dialog-heading">
+          <h3>编辑素材信息</h3>
+          <button value="cancel" class="icon-button" aria-label="关闭">×</button>
+        </div>
+        <input id="edit-asset-id" type="hidden" />
+        <label>
+          素材描述
+          <textarea id="edit-asset-caption" rows="3"></textarea>
+        </label>
+        <label>
+          标签
+          <input id="edit-asset-tags" placeholder="人物, 客厅, 夜景" />
+        </label>
+        <label>
+          素材角色
+          <select id="edit-asset-role" multiple size="7">
+            <option value="reference">普通参考</option>
+            <option value="character">角色</option>
+            <option value="location">场景</option>
+            <option value="prop">道具</option>
+            <option value="style">画风</option>
+            <option value="start_frame">首帧</option>
+            <option value="audio">声音</option>
+          </select>
+          <small>可多选；角色、首帧、场景等用途会同时保留。</small>
+        </label>
+        <menu>
+          <button value="cancel" class="ghost-button">取消</button>
+          <button id="save-asset" value="default" class="primary-button">保存</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status"></div>
+    <script src="/static/app.js?v=20260810-nautilus-13" type="module"></script>
+  </body>
+</html>

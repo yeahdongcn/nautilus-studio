@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nautilus-studio"
+version = "0.1.0"
+description = "Nautilus Studio: creator-first, agentic AI film workshop"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "fastapi>=0.116,<1",
+  "httpx>=0.28,<1",
+  "pillow>=11,<13",
+  "pydantic>=2.11,<3",
+  "python-multipart>=0.0.20,<1",
+  "tomli>=2,<3; python_version < '3.11'",
+  "uvicorn[standard]>=0.35,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<10",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+nautilus-studio = "long_video_studio.cli:main"
+long-video-studio = "long_video_studio.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/yeahdongcn/nautilus-studio"
+Repository = "https://github.com/yeahdongcn/nautilus-studio"
+Issues = "https://github.com/yeahdongcn/nautilus-studio/issues"
+Changelog = "https://github.com/yeahdongcn/nautilus-studio/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/long_video_studio"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["B008"]

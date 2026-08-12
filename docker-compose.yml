@@ -1,0 +1,25 @@
+services:
+  studio:
+    build: .
+    ports:
+      - "7860:7860"
+    environment:
+      STUDIO_DATA_DIR: /var/lib/nautilus
+      STUDIO_IMPORT_ROOTS: /media
+      STUDIO_PLANNER_BASE_URL: ${STUDIO_PLANNER_BASE_URL:-}
+      STUDIO_PLANNER_MODEL: ${STUDIO_PLANNER_MODEL:-}
+      STUDIO_PLANNER_API_KEY: ${STUDIO_PLANNER_API_KEY:-}
+      STUDIO_H3_FL2VA_URL: ${STUDIO_H3_FL2VA_URL:-}
+      STUDIO_H3_REF2VA_URL: ${STUDIO_H3_REF2VA_URL:-}
+      STUDIO_IMAGE_EDIT_PROVIDER: ${STUDIO_IMAGE_EDIT_PROVIDER:-disabled}
+      STUDIO_IMAGE_EDIT_BASE_URL: ${STUDIO_IMAGE_EDIT_BASE_URL:-}
+      STUDIO_IMAGE_EDIT_MODEL: ${STUDIO_IMAGE_EDIT_MODEL:-}
+      STUDIO_IMAGE_EDIT_API_KEY: ${STUDIO_IMAGE_EDIT_API_KEY:-}
+    volumes:
+      - nautilus-data:/var/lib/nautilus
+      - ${STUDIO_MEDIA_ROOT:-./media}:/media:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  nautilus-data:
