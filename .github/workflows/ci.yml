@@ -46,7 +46,7 @@ jobs:
           npm audit --audit-level=high
           npm sbom --sbom-format cyclonedx --sbom-type application > ../web-sbom.json
       - name: Upload web SBOM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: web-sbom
           path: web-sbom.json
@@ -65,7 +65,7 @@ jobs:
           pip-audit --strict --vulnerability-service osv
           pip-audit --format cyclonedx-json --output python-sbom.json
       - name: Upload Python SBOM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: python-sbom
           path: python-sbom.json
