@@ -11,7 +11,7 @@
     "format:write": "prettier --write src"
   },
   "dependencies": {
-    "framer-motion": "^11.11.17",
+    "framer-motion": "^13.1.0",
     "lucide-react": "^1.31.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
