@@ -1,3 +1,5 @@
+
+
 # Nautilus Studio
 
 [![CI](https://github.com/yeahdongcn/nautilus-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/yeahdongcn/nautilus-studio/actions/workflows/ci.yml)
@@ -378,7 +380,7 @@ internals:
 - `quality`: send the complete previous clip to Ref2VA.
 
 The two Ref2VA modes append an ephemeral "continue after the final moment; do
-not replay" constraint to clip 1 and later. The constraint is never persisted
+not replay" constraint to clip 2 and later. The constraint is never persisted
 into the editable storyboard prompt. An explicit start frame still wins and
 uses the FL2VA path.
 
