@@ -1,5 +1,3 @@
-
-
 # Nautilus Studio
 
 [![CI](https://github.com/yeahdongcn/nautilus-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/yeahdongcn/nautilus-studio/actions/workflows/ci.yml)
@@ -380,9 +378,9 @@ internals:
 - `quality`: send the complete previous clip to Ref2VA.
 
 The two Ref2VA modes append an ephemeral "continue after the final moment; do
-not replay" constraint to clip 2 and later. The constraint is never persisted
-into the editable storyboard prompt. An explicit start frame still wins and
-uses the FL2VA path.
+not replay" constraint to Ref2VA continuation clips from clip 2 onward. The
+constraint is never persisted into the editable storyboard prompt. An explicit
+start frame still wins and uses the FL2VA path.
 
 Ultra-fast therefore needs only Qwen Image, Qwen Image Edit, and MiniMax-H3
 FL2VA. Its default `fade_black` edit can be changed to `dissolve`, `hard_cut`,
